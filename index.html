@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAR-pet house — Уютный приют</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon-wrap">
+                    <i class="fa-solid fa-cat brand-icon"></i>
+                </div>
+                <h2>DAR-pet house</h2>
+            </div>
+            <nav class="menu">
+                <button class="menu-btn active" data-tab="dashboard">
+                    <i class="fa-solid fa-home"></i> Главная
+                </button>
+                <button class="menu-btn" data-tab="animals">
+                    <i class="fa-solid fa-paw"></i> Хвостики
+                </button>
+                <button class="menu-btn" data-tab="medical">
+                    <i class="fa-solid fa-kit-medical"></i> Здоровье
+                </button>
+                <button class="menu-btn" data-tab="finance">
+                    <i class="fa-solid fa-bowl-food"></i> Забота и Корм
+                </button>
+                <button class="menu-btn" data-tab="adoptions">
+                    <i class="fa-solid fa-heart"></i> Семья
+                </button>
+                <button class="menu-btn" data-tab="reports">
+                    <i class="fa-solid fa-chart-pie"></i> Аналитика
+                </button>
+            </nav>
+            <div class="user-profile">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=FF8A65&color=fff&rounded=true" alt="User">
+                <div class="user-info">
+                    <span class="user-name">Администратор</span>
+                    <span class="user-role">Управление приютом</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section id="dashboard" class="tab-content active">
+                <div class="welcome-banner">
+                    <div class="banner-text">
+                        <h1 id="page-title">Добро пожаловать в DAR-pet house 🐾</h1>
+                        <p class="subtitle" id="page-subtitle">Дом, где каждый хвостик ждет свою семью. Управляйте приютом с любовью.</p>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card card-orange">
+                        <div class="kpi-icon"><i class="fa-solid fa-dog"></i></div>
+                        <div class="kpi-info">
+                            <span class="kpi-title">Наши жители</span>
+                            <h3 id="kpi-total-animals">0</h3>
+                        </div>
+                    </div>
+                    <div class="kpi-card card-green">
+                        <div class="kpi-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                        <div class="kpi-info">
+                            <span class="kpi-title">Свободные домики</span>
+                            <h3 id="kpi-free-spots">0</h3>
+                        </div>
+                    </div>
+                    <div class="kpi-card card-pink">
+                        <div class="kpi-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                        <div class="kpi-info">
+                            <span class="kpi-title">Ждут ответа (заявки)</span>
+                            <h3 id="kpi-pending-requests">0</h3>
+                        </div>
+                    </div>
+                    <div class="kpi-card card-blue">
+                        <div class="kpi-icon"><i class="fa-solid fa-coins"></i></div>
+                        <div class="kpi-info">
+                            <span class="kpi-title">Затраты на уют</span>
+                            <h3 id="kpi-month-expenses">0 ₸</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-stethoscope text-orange"></i> Нуждаются в заботе (Лечение)</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Малыш</th>
+                                        <th>Статус</th>
+                                        <th>Домик</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-attention-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-syringe text-green"></i> Ближайшие прививки</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Малыш</th>
+                                        <th>Вакцина</th>
+                                        <th>Срок</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-vaccines-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="animals" class="tab-content">
+                <header class="section-header">
+                    <h2>Наши хвостики 🐶🐱</h2>
+                    <p>База данных жителей приюта и их домиков</p>
+                </header>
+
+                <div class="toolbar card">
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="animal-search" placeholder="Поиск по имени..." class="input-field">
+                        </div>
+                        <select id="animal-filter-species" class="input-field select-field">
+                            <option value="">Все виды</option>
+                            <option value="Кошка">Кошки 🐱</option>
+                            <option value="Собака">Собаки 🐶</option>
+                            <option value="Другое">Другие 🐰</option>
+                        </select>
+                        <select id="animal-filter-status" class="input-field select-field">
+                            <option value="">Все статусы</option>
+                            <option value="На карантине">На карантине</option>
+                            <option value="На лечении">На лечении</option>
+                            <option value="Готов к пристройству">Ищет дом</option>
+                            <option value="Пристроен">Дома</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="openModal('modal-add-animal')">
+                        <i class="fa-solid fa-plus"></i> Принять нового
+                    </button>
+                </div>
+
+                <div class="section-title">Домики и вольеры</div>
+                <div class="enclosures-grid" id="enclosures-container"></div>
+
+                <div class="section-title">Реестр хвостиков</div>
+                <div class="card no-padding">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Имя и фото</th>
+                                    <th>Вид / Порода</th>
+                                    <th>Пол</th>
+                                    <th>Возраст</th>
+                                    <th>В приюте с</th>
+                                    <th>Домик</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="animals-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="medical" class="tab-content">
+                <header class="section-header">
+                    <h2>Ветеринария и здоровье 🩺</h2>
+                    <p>Журнал осмотров, лечения и профилактики</p>
+                </header>
+                
+                <div class="action-cards">
+                    <div class="action-card" onclick="openModal('modal-add-exam')">
+                        <div class="action-icon bg-pink"><i class="fa-solid fa-stethoscope"></i></div>
+                        <div class="action-text">Новый осмотр</div>
+                    </div>
+                    <div class="action-card" onclick="openModal('modal-add-vaccine')">
+                        <div class="action-icon bg-green"><i class="fa-solid fa-syringe"></i></div>
+                        <div class="action-text">Сделать прививку</div>
+                    </div>
+                </div>
+
+                <div class="grid-2-col margin-top">
+                    <div class="card no-padding">
+                        <div class="card-header">
+                            <h3>История осмотров</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Пациент</th>
+                                        <th>Диагноз</th>
+                                        <th>Назначения</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="exams-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card no-padding">
+                        <div class="card-header">
+                            <h3>Журнал прививок</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Пациент</th>
+                                        <th>Препарат</th>
+                                        <th>Повтор</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vaccines-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="finance" class="tab-content">
+                <header class="section-header">
+                    <h2>Забота, Корм и Финансы 🥣</h2>
+                    <p>Учет выдачи корма, расходов на содержание и пожертвований</p>
+                </header>
+
+                <div class="action-cards">
+                    <div class="action-card" onclick="openModal('modal-add-feeding')">
+                        <div class="action-icon bg-orange"><i class="fa-solid fa-fish"></i></div>
+                        <div class="action-text">Покормить</div>
+                    </div>
+                    <div class="action-card" onclick="openModal('modal-add-expense')">
+                        <div class="action-icon bg-blue"><i class="fa-solid fa-wallet"></i></div>
+                        <div class="action-text">Учесть расход</div>
+                    </div>
+                    <div class="action-card" onclick="openModal('modal-add-donation')">
+                        <div class="action-icon bg-green"><i class="fa-solid fa-gift"></i></div>
+                        <div class="action-text">Пожертвование</div>
+                    </div>
+                </div>
+
+                <div class="grid-3-col margin-top">
+                    <div class="card no-padding">
+                        <div class="card-header"><h3>Кормление</h3></div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead><tr><th>Время</th><th>Домик</th><th>Корм</th></tr></thead>
+                                <tbody id="feeding-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card no-padding">
+                        <div class="card-header"><h3>Расходы</h3></div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead><tr><th>Дата</th><th>Категория</th><th>Сумма (₸)</th></tr></thead>
+                                <tbody id="expenses-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card no-padding">
+                        <div class="card-header"><h3>Добрые дела</h3></div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead><tr><th>Дата</th><th>От кого</th><th>Дар</th></tr></thead>
+                                <tbody id="donations-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="adoptions" class="tab-content">
+                <header class="section-header">
+                    <h2>Поиск семьи ❤️</h2>
+                    <p>Анкеты будущих хозяев и счастливые истории</p>
+                </header>
+
+                <div class="toolbar card">
+                    <button class="btn btn-primary" onclick="openModal('modal-add-request')">
+                        <i class="fa-solid fa-file-signature"></i> Оформить заявку на усыновление
+                    </button>
+                </div>
+
+                <div class="card no-padding margin-top">
+                    <div class="card-header"><h3>Кандидаты в хозяева</h3></div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Имя</th>
+                                    <th>Связь</th>
+                                    <th>Кого хочет взять</th>
+                                    <th>Статус</th>
+                                    <th>Решение</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adoption-requests-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card no-padding margin-top">
+                    <div class="card-header"><h3>Счастливые истории (Уже дома)</h3></div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Счастливый день</th>
+                                    <th>Малыш</th>
+                                    <th>Новая семья</th>
+                                    <th>Оформил(а)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adoptions-history-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="reports" class="tab-content">
+                <header class="section-header">
+                    <h2>Аналитика приюта 📊</h2>
+                    <p>Сводные отчеты по базе данных</p>
+                </header>
+
+                <div class="card report-selector-card">
+                    <div class="report-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="report-select-wrapper">
+                        <label for="report-select">Выберите аналитический отчет (из 10 запросов):</label>
+                        <select id="report-select" class="input-field select-field" onchange="generateReport()">
+                            <optgroup label="Обязательные (1-5)">
+                                <option value="1">1. Хвостики по видам и статусам</option>
+                                <option value="2">2. Расходы приюта по категориям</option>
+                                <option value="3">3. Самые популярные малыши (по заявкам)</option>
+                                <option value="4">4. Статистика обретения дома</option>
+                                <option value="5">5. Активность наших сотрудников</option>
+                            </optgroup>
+                            <optgroup label="Дополнительные (6-10)">
+                                <option value="6">6. Среднее время ожидания семьи</option>
+                                <option value="7">7. Кому пора на прививку</option>
+                                <option value="8">8. Заполненность домиков (%)</option>
+                                <option value="9">9. Анализ добрых дел (пожертвования)</option>
+                                <option value="10">10. Наибольшие затраты на содержание</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card no-padding margin-top report-output-card">
+                    <div class="card-header report-header">
+                        <h3 id="report-title">Результат</h3>
+                    </div>
+                    <div id="report-output" class="table-responsive"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальные окна -->
+    <div id="modal-add-animal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-add-animal')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-orange"><i class="fa-solid fa-paw"></i></div>
+                <h2>Новый житель</h2>
+            </div>
+            <form id="form-add-animal" onsubmit="handleAddAnimal(event)">
+                <div class="form-group">
+                    <label>Как зовут?</label>
+                    <input type="text" id="add-animal-name" required class="input-field">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Кто это?</label>
+                        <select id="add-animal-species" class="input-field select-field">
+                            <option value="Кошка">Кошка</option>
+                            <option value="Собака">Собака</option>
+                            <option value="Енот">Енот</option>
+                            <option value="Кролик">Кролик</option>
+                            <option value="Птица">Птица</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Порода</label>
+                        <input type="text" id="add-animal-breed" placeholder="Дворняжка" class="input-field">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Пол</label>
+                        <select id="add-animal-gender" class="input-field select-field">
+                            <option value="М">Мальчик</option>
+                            <option value="Ж">Девочка</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Возраст (лет)</label>
+                        <input type="number" id="add-animal-age" step="0.1" value="1" class="input-field">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Куда поселим (Домик)?</label>
+                    <select id="add-animal-enclosure" class="input-field select-field" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Статус</label>
+                    <select id="add-animal-status" class="input-field select-field">
+                        <option value="На карантине">Карантин</option>
+                        <option value="На лечении">Лечение</option>
+                        <option value="Готов к пристройству">Готов искать семью</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Принять в семью</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-move-animal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-move-animal')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-blue"><i class="fa-solid fa-house"></i></div>
+                <h2>Переселение</h2>
+            </div>
+            <form id="form-move-animal" onsubmit="handleMoveAnimal(event)">
+                <input type="hidden" id="move-animal-id">
+                <div class="info-box">Переселяем: <strong id="move-animal-name"></strong></div>
+                <div class="form-group margin-top">
+                    <label>Выберите новый домик</label>
+                    <select id="move-target-enclosure" class="input-field select-field" required></select>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Переселить</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-add-exam" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-add-exam')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-pink"><i class="fa-solid fa-stethoscope"></i></div>
+                <h2>Осмотр у врача</h2>
+            </div>
+            <form id="form-add-exam" onsubmit="handleAddExam(event)">
+                <div class="form-group">
+                    <label>Пациент</label>
+                    <select id="exam-animal-id" class="input-field select-field" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Диагноз</label>
+                    <input type="text" id="exam-diagnosis" placeholder="Здоров / Отит" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Лечение</label>
+                    <textarea id="exam-treatment" class="input-field" rows="3" placeholder="Витаминки, капли..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-add-vaccine" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-add-vaccine')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-green"><i class="fa-solid fa-syringe"></i></div>
+                <h2>Прививка</h2>
+            </div>
+            <form id="form-add-vaccine" onsubmit="handleAddVaccine(event)">
+                <div class="form-group">
+                    <label>Пациент</label>
+                    <select id="vaccine-animal-id" class="input-field select-field" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Препарат</label>
+                    <input type="text" id="vaccine-name" placeholder="Nobivac" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Следующая прививка</label>
+                    <input type="date" id="vaccine-next-date" class="input-field" required>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Записать</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-add-feeding" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-add-feeding')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-orange"><i class="fa-solid fa-bone"></i></div>
+                <h2>Обед!</h2>
+            </div>
+            <form id="form-add-feeding" onsubmit="handleAddFeeding(event)">
+                <div class="form-group">
+                    <label>Кого кормим (Домик)?</label>
+                    <select id="feeding-enclosure" class="input-field select-field" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Какой корм?</label>
+                    <input type="text" id="feeding-type" placeholder="Сухой премиум / Вкусняшки" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Сколько съели (кг)?</label>
+                    <input type="number" id="feeding-amount" step="0.1" value="2.5" class="input-field" required>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Приятного аппетита</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-add-expense" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-add-expense')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-blue"><i class="fa-solid fa-coins"></i></div>
+                <h2>Учесть расход</h2>
+            </div>
+            <form id="form-add-expense" onsubmit="handleAddExpense(event)">
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select id="expense-category" class="input-field select-field">
+                        <option value="Питание">Вкусняшки и Корм</option>
+                        <option value="Лечение">Лекарства</option>
+                        <option value="Содержание">Уют (Свет, тепло)</option>
+                        <option value="Инвентарь">Игрушки и миски</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Сумма (₸)</label>
+                    <input type="number" id="expense-amount" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Кому именно (опционально)</label>
+                    <select id="expense-animal-id" class="input-field select-field">
+                        <option value="">-- Всем малышам --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <input type="text" id="expense-desc" class="input-field" placeholder="Купили новые лежанки..." required>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-add-donation" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-add-donation')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-green"><i class="fa-solid fa-heart"></i></div>
+                <h2>Доброе дело</h2>
+            </div>
+            <form id="form-add-donation" onsubmit="handleAddDonation(event)">
+                <div class="form-group">
+                    <label>Имя волшебника (Кто подарил?)</label>
+                    <input type="text" id="donation-donor" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Вид помощи</label>
+                    <select id="donation-type" class="input-field select-field">
+                        <option value="Денежное">Денежка (₸)</option>
+                        <option value="Материальное">Подарки (Корм/Вещи)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Сколько / Что именно</label>
+                    <input type="text" id="donation-value" class="input-field" placeholder="10000 ₸ или 5 кг корма" required>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Сказать спасибо!</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-add-request" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-add-request')">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon bg-pink"><i class="fa-solid fa-envelope-open-heart"></i></div>
+                <h2>Заявка на усыновление</h2>
+            </div>
+            <form id="form-add-request" onsubmit="handleAddRequest(event)">
+                <div class="form-group">
+                    <label>Имя будущего хозяина</label>
+                    <input type="text" id="req-owner-name" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Как связаться (Телефон)</label>
+                    <input type="text" id="req-owner-phone" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Кого хотят забрать?</label>
+                    <select id="req-animal-id" class="input-field select-field" required></select>
+                </div>
+                <button type="submit" class="btn btn-primary full-width margin-top">Создать анкету</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">
+        <div class="toast-icon"><i class="fa-solid fa-check-circle"></i></div>
+        <div class="toast-message" id="toast-message">Отлично!</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
