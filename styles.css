@@ -1,10 +1,10 @@
 :root {
-    --bg-app: #FDF8F5; /* Теплый светлый фон */
+    --bg-app: #FDF8F5;
     --bg-sidebar: #FFFFFF;
     --bg-card: #FFFFFF;
     --bg-hover: #FFF3E0;
     --border-color: #F4E8E1;
-    --text-main: #5D4037; /* Мягкий коричневый */
+    --text-main: #5D4037;
     --text-muted: #8D6E63;
     
     --accent-orange: #FF8A65;
@@ -26,7 +26,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Nunito', sans-serif; /* Более круглый, ламповый шрифт */
+    font-family: 'Nunito', sans-serif;
 }
 
 body {
@@ -42,7 +42,6 @@ body {
     width: 100%;
 }
 
-/* Sidebar */
 .sidebar {
     width: 280px;
     background-color: var(--bg-sidebar);
@@ -163,7 +162,6 @@ body {
     font-weight: 600;
 }
 
-/* Main Content */
 .main-content {
     flex-grow: 1;
     padding: 40px;
@@ -202,7 +200,6 @@ body {
     display: block;
 }
 
-/* Welcome Banner */
 .welcome-banner {
     background: linear-gradient(rgba(255, 138, 101, 0.85), rgba(255, 183, 77, 0.85)), url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&fit=crop') center/cover;
     border-radius: var(--radius-lg);
@@ -227,7 +224,6 @@ body {
     opacity: 0.9;
 }
 
-/* KPI Cards */
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -286,7 +282,6 @@ body {
     color: var(--text-main);
 }
 
-/* Grids and Cards */
 .dashboard-grid, .grid-2-col {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -339,7 +334,6 @@ body {
     margin-top: 24px;
 }
 
-/* Forms & Inputs */
 .toolbar {
     display: flex;
     justify-content: space-between;
@@ -402,7 +396,6 @@ body {
     padding-right: 44px;
 }
 
-/* Enclosures grid */
 .enclosures-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -460,7 +453,6 @@ body {
 .progress-bar-fill.warning { background-color: var(--accent-yellow); }
 .progress-bar-fill.full { background-color: var(--accent-red); }
 
-/* Animal Tables & Avatars */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -530,7 +522,6 @@ body {
 .badge-adopted { background-color: #FCE4EC; color: #AD1457; }
 .badge-blue { background-color: #E3F2FD; color: #1565C0; }
 
-/* Buttons */
 .btn {
     padding: 14px 24px;
     border: none;
@@ -570,7 +561,6 @@ body {
 .btn-sm { padding: 8px 16px; font-size: 14px; }
 .full-width { width: 100%; justify-content: center; margin-top: 24px; }
 
-/* Action Cards */
 .action-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -614,7 +604,6 @@ body {
     color: var(--text-main);
 }
 
-/* Report Select */
 .report-selector-card {
     display: flex;
     align-items: center;
@@ -642,7 +631,6 @@ body {
     font-size: 15px; color: var(--text-muted); font-weight: 700;
 }
 
-/* Modals */
 .modal {
     display: none;
     position: fixed;
@@ -715,7 +703,32 @@ body {
     font-weight: 700;
 }
 
-/* Toast */
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px dashed var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+}
+
+.auth-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+}
+
+.auth-tab-btn.active {
+    background-color: #FFF3E0;
+    color: var(--accent-orange);
+}
+
 .toast {
     position: fixed;
     bottom: 40px; right: 40px;

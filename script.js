@@ -1,4 +1,3 @@
-// Фотографии для лампового дизайна (Unsplash)
 const getAnimalImg = (species, id) => {
     const cats = [
         'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&fit=crop',
@@ -15,14 +14,21 @@ const getAnimalImg = (species, id) => {
         'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=150&fit=crop'
     ];
     const others = [
-        'https://images.unsplash.com/photo-1605092676920-8ac5ae40c7c8?w=150&fit=crop', // Енот
-        'https://images.unsplash.com/photo-1552728089-571688d16d7a?w=150&fit=crop', // Птица
-        'https://images.unsplash.com/photo-1585110396000-c9fd45c36391?w=150&fit=crop'  // Кролик
+        'https://images.unsplash.com/photo-1605092676920-8ac5ae40c7c8?w=150&fit=crop',
+        'https://images.unsplash.com/photo-1552728089-571688d16d7a?w=150&fit=crop',
+        'https://images.unsplash.com/photo-1585110396000-c9fd45c36391?w=150&fit=crop'
     ];
 
     if (species === 'Кошка') return cats[id % cats.length];
     if (species === 'Собака') return dogs[id % dogs.length];
     return others[id % others.length];
+};
+
+let authState = {
+    currentUser: JSON.parse(localStorage.getItem('dar_current_user')) || null,
+    users: JSON.parse(localStorage.getItem('dar_registered_users')) || [
+        { name: 'Администратор', email: 'admin@dar.kz', pass: '123456', role: 'Администратор' }
+    ]
 };
 
 let state = {
@@ -117,8 +123,102 @@ let state = {
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initModalSelects();
+    updateAuthUI();
     renderAll();
 });
+
+function updateAuthUI() {
+    const nameElem = document.getElementById('user-display-name');
+    const roleElem = document.getElementById('user-display-role');
+    const avatarElem = document.getElementById('user-avatar');
+    const btnElem = document.getElementById('auth-action-btn');
+
+    if (authState.currentUser) {
+        nameElem.innerText = authState.currentUser.name;
+        roleElem.innerText = authState.currentUser.role;
+        avatarElem.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(authState.currentUser.name)}&background=FF8A65&color=fff&rounded=true`;
+        btnElem.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+        btnElem.title = 'Выйти';
+    } else {
+        nameElem.innerText = 'Гость';
+        roleElem.innerText = 'Не авторизован';
+        avatarElem.src = `https://ui-avatars.com/api/?name=Гость&background=8D6E63&color=fff&rounded=true`;
+        btnElem.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i>';
+        btnElem.title = 'Войти';
+    }
+}
+
+function toggleAuthModal() {
+    if (authState.currentUser) {
+        authState.currentUser = null;
+        localStorage.removeItem('dar_current_user');
+        updateAuthUI();
+        showToast('Вы вышли из аккаунта');
+    } else {
+        openModal('modal-auth');
+    }
+}
+
+function switchAuthTab(tab) {
+    const loginForm = document.getElementById('form-login');
+    const regForm = document.getElementById('form-register');
+    const loginBtn = document.getElementById('tab-btn-login');
+    const regBtn = document.getElementById('tab-btn-register');
+
+    if (tab === 'login') {
+        loginForm.style.display = 'block';
+        regForm.style.display = 'none';
+        loginBtn.classList.add('active');
+        regBtn.classList.remove('active');
+    } else {
+        loginForm.style.display = 'none';
+        regForm.style.display = 'block';
+        regBtn.classList.add('active');
+        loginBtn.classList.remove('active');
+    }
+}
+
+function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+
+    const user = authState.users.find(u => u.email === email && u.pass === pass);
+
+    if (user) {
+        authState.currentUser = user;
+        localStorage.setItem('dar_current_user', JSON.stringify(user));
+        updateAuthUI();
+        closeModal('modal-auth');
+        showToast(`Добро пожаловать, ${user.name}!`);
+    } else {
+        showToast('Неверный Email или пароль!', 'error');
+    }
+}
+
+function handleRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById('reg-name').value;
+    const email = document.getElementById('reg-email').value;
+    const pass = document.getElementById('reg-password').value;
+    const role = document.getElementById('reg-role').value;
+
+    if (authState.users.some(u => u.email === email)) {
+        showToast('Пользователь с таким Email уже существует!', 'error');
+        return;
+    }
+
+    const newUser = { name, email, pass, role };
+    authState.users.push(newUser);
+    localStorage.setItem('dar_registered_users', JSON.stringify(authState.users));
+
+    authState.currentUser = newUser;
+    localStorage.setItem('dar_current_user', JSON.stringify(newUser));
+
+    updateAuthUI();
+    closeModal('modal-auth');
+    showToast(`Аккаунт создан! Добро пожаловать, ${name}`);
+}
 
 function initNavigation() {
     document.querySelectorAll('.menu-btn').forEach(btn => {
@@ -667,7 +767,7 @@ function approveAndTransfer(requestId) {
         animal_name: animal.name,
         owner_name: req.owner_name,
         date: new Date().toISOString().split('T')[0],
-        employee: 'Мадина К.'
+        employee: authState.currentUser ? authState.currentUser.name : 'Мадина К.'
     });
 
     state.adoptionRequests.forEach(otherReq => {
